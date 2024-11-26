@@ -38,7 +38,7 @@ function TableRow(props) {
           }
         } else {
           return <></>;
-      })}
+      }})}
     </div>
   );
 }
