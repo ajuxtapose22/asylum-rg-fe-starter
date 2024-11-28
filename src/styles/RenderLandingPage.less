@@ -8,6 +8,7 @@
 @tablet-large: ~"(min-width: 769px) and (max-width: 1024px)";
 @laptop: ~"(min-width: 1025px) and (max-width: 1280px)";
 
+
 .header {
     background-color: @main-color;
     display:flex;
@@ -41,17 +42,52 @@
     font-size: 1.2rem;
 }
 
-// .graphs-section {
-//  ADD THIS BACK IN WHEN YOU HAVE THE GRAPHS SECTION
-// }
 
-.view-more-data-btn-container {
-    height: 44px;
-    width: 180px;
-    margin: 0 auto;
+
+.graphs-section {
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    gap: 20px; 
+    text-align: center; 
+  }
+  
+  .graphs-section div {
+    flex: 1 1 calc(33.333% - 20px);
+    box-sizing: border-box;
     text-align: center;
-    margin-bottom: 10%;
-}
+   
+  }
+  
+  .graphs-section img {
+    max-width: 100%;
+    height: auto;
+    max-height: 175px;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+  
+  .graphs-section p {
+    font-size: 24px;
+    margin-top: 24px;
+    color: #333;
+    justify-content: center;
+    font-family: 'AcuminProRegular';
+  }
+
+
+
+  .view-more-data-btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; 
+    margin: 30px 0px 100px 0px; 
+  }
+  
+
+
+
 
 .middle-section {
     display: flex;
