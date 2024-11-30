@@ -111,9 +111,47 @@
     font-size: 1.4rem;
 }
 
-// .bottom-section {
-//      ADD THIS BACK IN WHEN YOU HAVE A BOTTOM SECTION
-// }
+// BOTTOM SECTION START ///////////////////////////
+.bottom-section {
+    background-color: var(--primary-gray); /* Gray background for bottom section */
+    padding: 40px 20px;
+    text-align: center; /* Center-align text for the section */
+    font-family: 'moneta';
+  }
+  
+  .bottom-section h1 {
+    color: #333; /* Darker text for the section header */
+    font-size: 3rem;
+    margin-bottom: 20px;
+    padding: 70px;
+  }
+  
+  .data-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .data-container .first-data-point-container,
+  .data-container .second-data-point-container {
+    flex: 1; /* Each column takes up equal space */
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .data-container h2 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+  
+  .data-container h3 {
+    font-size: 1.2rem;
+    padding: 12px;
+    margin: 20px;
+  }
+  
+
 
 .back-to-top {
     width: 8%;
@@ -122,6 +160,8 @@
     color: black;
     margin: 5% auto;
 }
+
+
 
 .ant-space-align-center {
     @media (max-width: 375px) {
