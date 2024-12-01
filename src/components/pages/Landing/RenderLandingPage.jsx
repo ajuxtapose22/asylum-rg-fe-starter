@@ -1,5 +1,4 @@
 import React from 'react';
-// ADD IMPORTS BACK FOR GRAPHS SECTION
 import GrantRatesByOfficeImg from '../../../styles/Images/bar-graph-no-text.png';
 import GrantRatesByNationalityImg from '../../../styles/Images/pie-chart-no-text.png';
 import GrantRatesOverTimeImg from '../../../styles/Images/line-graph-no-text.png';
@@ -8,7 +7,7 @@ import '../../../styles/RenderLandingPage.less';
 import { Button } from 'antd';
 import { useHistory } from 'react-router-dom';
 // for the purposes of testing PageNav
-import PageNav from '../../common/PageNav';
+// import PageNav from '../../common/PageNav';
 
 function RenderLandingPage(props) {
   const scrollToTop = () => {
@@ -32,18 +31,18 @@ function RenderLandingPage(props) {
         </div>
       </div>
 
- {/* Graphs Section: Add code here for the graphs section for your first ticket */}
+ {/* Graphs Section */}
 <div className="graphs-section">
   <div className="grant-rates-by-office-graph-container">
-    <img src={GrantRatesByOfficeImg} alt="Grant Rates By Office" class="gr-office-img" />
+    <img src={GrantRatesByOfficeImg} alt="Grant Rates By Office" className="gr-office-img" />
     <p>Search Grant Rates By Office</p>
   </div>
   <div className="grant-rates-by-nationality-container">
-    <img src={GrantRatesByNationalityImg} alt="Grant Rates By Nationality" class="gr-nationality-img"/>
+    <img src={GrantRatesByNationalityImg} alt="Grant Rates By Nationality" className="gr-nationality-img"/>
     <p>Search Grant Rates By Nationality</p>
   </div>
   <div className="grant-rates-over-time-container">
-    <img src={GrantRatesOverTimeImg} alt="Grant Rates Over Time" class="gr-overtime-img"/>
+    <img src={GrantRatesOverTimeImg} alt="Grant Rates Over Time" className="gr-overtime-img"/>
     <p>Search Grant Rates Over Time</p>
   </div>
 
@@ -61,7 +60,7 @@ function RenderLandingPage(props) {
     {/* Second Button */}
     <a href="https://humanrightsfirst.org/wp-content/uploads/2022/10/COW2021001887-I589Data.csv">
 
-    <div class='read-more-btn'>
+    <div className='read-more-btn'>
       
     <Button
       type="default"
@@ -92,7 +91,7 @@ function RenderLandingPage(props) {
         </div>
       </div>
       <div>
-        {/* Bottom Section: Add code here for the graphs section for your first ticket */}
+        {/* Bottom Section */}
 
         <div className="bottom-section">
           <h1>Systemic Disparity Insights</h1>

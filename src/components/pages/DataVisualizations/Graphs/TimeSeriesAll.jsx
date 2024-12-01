@@ -7,10 +7,13 @@ import { colors } from '../../../../styles/data_vis_colors';
 const { background_color } = colors;
 
 const mapStateToProps = state => {
+  // console.log('mapStateToProps state:', state); 
   return {
     timeSeriesAllData: state.vizReducer.timeSeriesAllData,
   };
 };
+
+
 
 function TimeSeriesAll(props) {
   const { timeSeriesAllData } = props;
@@ -23,6 +26,9 @@ function TimeSeriesAll(props) {
     '% Admin Close / Dismissal',
     '% Denied',
   ];
+
+
+
   useEffect(() => {
     if (timeSeriesAllData.rowsForAllDisplay === undefined) {
       setRowsForAllDisplay([]);

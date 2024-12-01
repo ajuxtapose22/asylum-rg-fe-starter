@@ -50,6 +50,8 @@ function GraphWrapper(props) {
         break;
     }
   }
+
+
   function updateStateWithNewData(years, view, office, stateSettingCallback) {
     /*
           _                                                                             _
@@ -72,6 +74,7 @@ function GraphWrapper(props) {
                                    -- Mack 
     
     */
+   
 
     if (office === 'all' || !office) {
       axios
@@ -82,11 +85,13 @@ function GraphWrapper(props) {
             to: years[1],
           },
         })
+        
         .then(result => {
+          // console.log('API Response Data:', result.data);
           stateSettingCallback(view, office, test_data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
         })
         .catch(err => {
-          console.error(err);
+          console.error(`API Request Error:`, err);
         });
     } else {
       axios
@@ -109,6 +114,11 @@ function GraphWrapper(props) {
   const clearQuery = (view, office) => {
     dispatch(resetVisualizationQuery(view, office));
   };
+
+
+
+
+
   return (
     <div
       className="map-wrapper-container"
