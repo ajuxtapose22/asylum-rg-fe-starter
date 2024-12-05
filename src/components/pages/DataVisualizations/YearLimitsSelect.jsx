@@ -73,6 +73,7 @@ function YearLimitsSelect(props) {
 
 
   const stateSettingFn = useCallback((view, office, data) => {
+    // console.log('NEW Raw Data:', data); 
     const plotlyReadyData = rawApiDataToPlotlyReadyInfo(view, office, data);
     dispatch(setVisualizationData(view, office, plotlyReadyData));
   }, [dispatch]);

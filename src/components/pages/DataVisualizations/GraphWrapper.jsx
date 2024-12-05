@@ -50,8 +50,6 @@ function GraphWrapper(props) {
         break;
     }
   }
-
-
   function updateStateWithNewData(years, view, office, stateSettingCallback) {
     /*
           _                                                                             _
@@ -74,28 +72,25 @@ function GraphWrapper(props) {
                                    -- Mack 
     
     */
-   
 
     if (office === 'all' || !office) {
       axios
-        .get('https://hrf-asylum-be-b.herokuapp.com/cases', {
+        .get(process.env.REACT_APP_API_URI, {
           // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
           params: {
             from: years[0],
             to: years[1],
           },
         })
-        
         .then(result => {
-          // console.log('API Response Data:', result.data);
-          stateSettingCallback(view, office, result.data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
+          stateSettingCallback(view, office, test_data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
         })
         .catch(err => {
-          console.error(`API Request Error:`, err);
+          console.error(err);
         });
     } else {
       axios
-        .get('https://hrf-asylum-be-b.herokuapp.com/cases', {
+        .get(process.env.REACT_APP_API_URI, {
           // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
           params: {
             from: years[0],
@@ -104,7 +99,7 @@ function GraphWrapper(props) {
           },
         })
         .then(result => {
-          stateSettingCallback(view, office, result.data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
+          stateSettingCallback(view, office, test_data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
         })
         .catch(err => {
           console.error(err);
@@ -114,11 +109,6 @@ function GraphWrapper(props) {
   const clearQuery = (view, office) => {
     dispatch(resetVisualizationQuery(view, office));
   };
-
-
-
-
-
   return (
     <div
       className="map-wrapper-container"
