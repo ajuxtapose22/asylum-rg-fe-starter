@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import CitizenshipMapAll from './Graphs/CitizenshipMapAll';
@@ -19,21 +19,56 @@ const { background_color } = colors;
 function GraphWrapper(props) {
   const { set_view, dispatch } = props;
   let { office, view } = useParams();
+
+  const [data, setData ] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   if (!view) {
     set_view('time-series');
     view = 'time-series';
   }
+
+
+  // Fetch data
+  useEffect(() => {
+    const url = `https://hrf-asylum-be-b.herokuapp.com/cases`;
+
+    const fetchData = async () => {
+      try {
+        let response;
+        if (view === 'time-series') {
+          response = await axios.get(`${url}/fiscalSummary`);
+          // console.log(response);
+        } else if (view === 'citizenship') {
+          response = await axios.get(`https://hrf-asylum-be-b.herokuapp.com/cases/citizenshipSummary`);
+          //  console.log(response);
+        }
+        setData(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.log("Error fetching data:", err);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [view, office]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   let map_to_render;
   if (!office) {
     switch (view) {
       case 'time-series':
-        map_to_render = <TimeSeriesAll />;
+        map_to_render = <TimeSeriesAll data={data} />;
         break;
       case 'office-heat-map':
-        map_to_render = <OfficeHeatMap />;
+        map_to_render = <OfficeHeatMap data={data} />;
         break;
       case 'citizenship':
-        map_to_render = <CitizenshipMapAll />;
+        map_to_render = <CitizenshipMapAll data={data} />;
         break;
       default:
         break;
@@ -41,15 +76,30 @@ function GraphWrapper(props) {
   } else {
     switch (view) {
       case 'time-series':
-        map_to_render = <TimeSeriesSingleOffice office={office} />;
+        map_to_render = <TimeSeriesSingleOffice office={office} data={data} />;
         break;
       case 'citizenship':
-        map_to_render = <CitizenshipMapSingleOffice office={office} />;
+        map_to_render = <CitizenshipMapSingleOffice office={office} data={data} />;
         break;
       default:
         break;
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   function updateStateWithNewData(years, view, office, stateSettingCallback) {
     /*
           _                                                                             _
@@ -72,6 +122,9 @@ function GraphWrapper(props) {
                                    -- Mack 
     
     */
+
+    
+
 
     if (office === 'all' || !office) {
       axios
@@ -106,6 +159,26 @@ function GraphWrapper(props) {
         });
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const clearQuery = (view, office) => {
     dispatch(resetVisualizationQuery(view, office));
   };
