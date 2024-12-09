@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import CitizenshipMapAll from './Graphs/CitizenshipMapAll';
@@ -10,7 +10,7 @@ import YearLimitsSelect from './YearLimitsSelect';
 import ViewSelect from './ViewSelect';
 import axios from 'axios';
 import { resetVisualizationQuery } from '../../../state/actionCreators';
-import test_data from '../../../data/test_data.json';
+// import test_data from '../../../data/test_data.json';
 import { colors } from '../../../styles/data_vis_colors';
 import ScrollToTopOnMount from '../../../utils/scrollToTopOnMount';
 
@@ -20,55 +20,22 @@ function GraphWrapper(props) {
   const { set_view, dispatch } = props;
   let { office, view } = useParams();
 
-  const [data, setData ] = useState(null);
-  const [loading, setLoading] = useState(true);
-
   if (!view) {
     set_view('time-series');
     view = 'time-series';
-  }
-
-
-  // Fetch data
-  useEffect(() => {
-    const url = `https://hrf-asylum-be-b.herokuapp.com/cases`;
-
-    const fetchData = async () => {
-      try {
-        let response;
-        if (view === 'time-series') {
-          response = await axios.get(`${url}/fiscalSummary`);
-          console.log(`fiscal:` , response);
-        } else if (view === 'citizenship') {
-          response = await axios.get(`${url}/citizenshipSummary`);
-           console.log(`citizen: `, response);
-        }
-        setData(response.data);
-        setLoading(false);
-      } catch (err) {
-        console.log("Error fetching data:", err);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [view, office]);
-
-  if (loading) {
-    return <div>Loading...</div>;
   }
 
   let map_to_render;
   if (!office) {
     switch (view) {
       case 'time-series':
-        map_to_render = <TimeSeriesAll data={data} />;
+        map_to_render = <TimeSeriesAll />;
         break;
       case 'office-heat-map':
-        map_to_render = <OfficeHeatMap data={data} />;
+        map_to_render = <OfficeHeatMap />;
         break;
       case 'citizenship':
-        map_to_render = <CitizenshipMapAll data={data} />;
+        map_to_render = <CitizenshipMapAll />;
         break;
       default:
         break;
@@ -76,60 +43,33 @@ function GraphWrapper(props) {
   } else {
     switch (view) {
       case 'time-series':
-        map_to_render = <TimeSeriesSingleOffice office={office} data={data} />;
+        map_to_render = <TimeSeriesSingleOffice office={office} />;
         break;
       case 'citizenship':
-        map_to_render = <CitizenshipMapSingleOffice office={office} data={data} />;
+        map_to_render = <CitizenshipMapSingleOffice office={office} />;
         break;
       default:
         break;
     }
   }
 
-  function updateStateWithNewData(years, view, office, stateSettingCallback) {
-    /*
-          _                                                                             _
-        |                                                                                 |
-        |   Example request for once the `/summary` endpoint is up and running:           |
-        |                                                                                 |
-        |     `${url}/summary?to=2022&from=2015&office=ZLA`                               |
-        |                                                                                 |
-        |     so in axios we will say:                                                    |
-        |                                                                                 |     
-        |       axios.get(`${url}/summary`, {                                             |
-        |         params: {                                                               |
-        |           from: <year_start>,                                                   |
-        |           to: <year_end>,                                                       |
-        |           office: <office>,       [ <-- this one is optional! when    ]         |
-        |         },                        [ querying by `all offices` there's ]         |
-        |       })                          [ no `office` param in the query    ]         |
-        |                                                                                 |
-          _                                                                             _
-                                   -- Mack 
-    
-    */
-
-    const url = `https://hrf-asylum-be-b.herokuapp.com/cases`;
-   
+  async function updateStateWithNewData(years, view, office, stateSettingCallback) {
+    const url = `https://hrf-asylum-be-b.herokuapp.com/cases`;                      
 
     if (office === 'all' || !office) {
-      axios
-        .get(url, {
+      Promise.all([   
+      await axios
+
+        .get(`${url}/fiscalSummary`, {
           // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
           params: {
             from: years[0],
             to: years[1],
           },
-        })
-        .then(result => {
-          stateSettingCallback(view, office, result.data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    } else {
-      axios
-        .get(url, {
+        }),
+         
+      await axios
+        .get(`${url}/citizenshipSummary`, {
           // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
           params: {
             from: years[0],
@@ -137,30 +77,20 @@ function GraphWrapper(props) {
             office: office,
           },
         })
-        .then(result => {
-          stateSettingCallback(view, office, result.data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
-        })
-        .catch(err => {
-          console.error(err);
-        });
+      ])
+      .then(([callA, callB]) => {
+        const yearResults = callA.data.yearResults;
+        const citizenResults = callB.data;
+        const combinedData = [{yearResults, citizenResults}];
+        // console.log(`year:`, yearResults);
+        // console.log(`citi:`, citizenResults);
+        stateSettingCallback(view, office, [combinedData][0]);
+      })
+      .catch(err => {
+        console.log(err);
+      });
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -168,6 +98,8 @@ function GraphWrapper(props) {
   const clearQuery = (view, office) => {
     dispatch(resetVisualizationQuery(view, office));
   };
+
+
   return (
     <div
       className="map-wrapper-container"

@@ -155,7 +155,7 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
                 : 0
             );
           }
-          officeHeatMapDataObject['z'].push(zAxisArray); //push to zaxis array
+          officeHeatMapDataObject['z'].push(zAxisArray); //push to z axis array
         }
         return { officeHeatMapDataObject, rowsForTable };
 
