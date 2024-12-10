@@ -54,7 +54,9 @@ function GraphWrapper(props) {
   }
 
   async function updateStateWithNewData(years, view, office, stateSettingCallback) {
-    const url = `https://hrf-asylum-be-b.herokuapp.com/cases`;                      
+    const url = `https://asylum-be.onrender.com`;                      
+
+    
 
     if (office === 'all' || !office) {
       Promise.all([   
@@ -65,6 +67,7 @@ function GraphWrapper(props) {
           params: {
             from: years[0],
             to: years[1],
+            office: office,
           },
         }),
          
@@ -80,10 +83,10 @@ function GraphWrapper(props) {
       ])
       .then(([callA, callB]) => {
         const yearResults = callA.data.yearResults;
-        const citizenResults = callB.data;
-        const combinedData = [{yearResults, citizenResults}];
+        const citizenshipResults  = callB.data;
+        const combinedData = [{yearResults, citizenshipResults }];
         // console.log(`year:`, yearResults);
-        // console.log(`citi:`, citizenResults);
+        // console.log(`citi:`, citizenshipResults );
         stateSettingCallback(view, office, [combinedData][0]);
       })
       .catch(err => {
@@ -136,3 +139,8 @@ function GraphWrapper(props) {
 }
 
 export default connect()(GraphWrapper);
+
+
+
+
+

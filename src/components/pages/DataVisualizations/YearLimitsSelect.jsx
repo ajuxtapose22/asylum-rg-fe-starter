@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { Form, Button /*Input*/ } from 'antd';
 import {
   setVisualizationData,
@@ -19,22 +19,18 @@ const mapStateToProps = (state, ownProps) => {
       case 'time-series':
         return {
           years: state.vizReducer.timeSeriesAllYears,
-          data: state.vizReducer.timeSeriesAllData 
         };
       case 'office-heat-map':
         return {
           years: state.vizReducer.officeHeatMapYears,
-          data: state.vizReducer.officeHeatMapData
         };
       case 'citizenship':
         return {
           years: state.vizReducer.citizenshipMapAllYears,
-          data: state.vizReducer.citizenshipMapAllData
         };
       default:
         return {
           years: ['', ''],
-          data: null,
         };
     }
   } else {
@@ -42,17 +38,14 @@ const mapStateToProps = (state, ownProps) => {
       case 'time-series':
         return {
           years: state.vizReducer.offices[office].timeSeriesYears,
-          data: state.vizReducer.offices[office].timeSeriesData,
         };
       case 'citizenship':
         return {
           years: state.vizReducer.offices[office].citizenshipMapYears,
-          data: state.vizReducer.offices[office].citizenshipMapData,
         };
       default:
         return {
           years: ['', ''],
-          data: null,
         };
     }
   }
@@ -70,18 +63,11 @@ function YearLimitsSelect(props) {
   //       e.target.value
   //     ));
   // };
-
-
-  const stateSettingFn = useCallback((view, office, data) => {
-    // console.log('NEW Raw Data:', data); 
+  const stateSettingFn = (view, office, data) => {
     const plotlyReadyData = rawApiDataToPlotlyReadyInfo(view, office, data);
     dispatch(setVisualizationData(view, office, plotlyReadyData));
-  }, [dispatch]);
-
-  
+  };
   const [form] = Form.useForm();
-
-//  Custom interval hook for form updates
   useInterval(() => {
     form.setFieldsValue({
       year_start: years[0],
@@ -89,14 +75,9 @@ function YearLimitsSelect(props) {
     });
   }, 10);
 
-
-
-  // Modified useEffect with proper dependencies
   useEffect(() => {
-    if (updateStateWithNewData) {
-      updateStateWithNewData(years, view, office, stateSettingFn);
-    }
-  }, [years, view, office, stateSettingFn, updateStateWithNewData]);  // Added dependencies
+    updateStateWithNewData(years, view, office, stateSettingFn);
+  });
 
   return (
     <div
