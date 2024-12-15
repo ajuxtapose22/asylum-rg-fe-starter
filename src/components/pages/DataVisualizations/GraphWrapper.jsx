@@ -16,6 +16,7 @@ import ScrollToTopOnMount from '../../../utils/scrollToTopOnMount';
 
 const { background_color } = colors;
 
+// FUNCTION MAIN COMPONENT
 function GraphWrapper(props) {
   const { set_view, dispatch } = props;
   let { office, view } = useParams();
