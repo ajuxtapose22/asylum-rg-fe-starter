@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Auth0Provider } from '@auth0/auth0-react';
 import {
   BrowserRouter as Router,
   Route,
@@ -26,13 +27,24 @@ import { colors } from './styles/data_vis_colors';
 const { primary_accent_color } = colors;
 
 const store = configureStore({ reducer: reducer });
+
+
 ReactDOM.render(
   <Router>
+    <Auth0Provider
+     domain={process.env.REACT_APP_AUTH_O_DOMAIN}
+     clientId={process.env.REACT_APP_AUTH_CLIENT_ID}
+    authorizationParams={{
+      redirect_uri: window.location.origin,
+    }}
+  >
+
     <Provider store={store}>
       <React.StrictMode>
         <App />
       </React.StrictMode>
     </Provider>
+  </Auth0Provider>
   </Router>,
   document.getElementById('root')
 );

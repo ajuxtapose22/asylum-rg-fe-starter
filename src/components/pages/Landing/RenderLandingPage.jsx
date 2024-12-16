@@ -4,7 +4,11 @@ import GrantRatesByNationalityImg from '../../../styles/Images/pie-chart-no-text
 import GrantRatesOverTimeImg from '../../../styles/Images/line-graph-no-text.png';
 import HrfPhoto from '../../../styles/Images/paper-stack.jpg';
 import '../../../styles/RenderLandingPage.less';
+
+
+
 import { Button } from 'antd';
+
 import { useHistory } from 'react-router-dom';
 // for the purposes of testing PageNav
 // import PageNav from '../../common/PageNav';
@@ -13,14 +17,17 @@ function RenderLandingPage(props) {
   const scrollToTop = () => {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+    
   };
 
   const history = useHistory();
 
   return (
+  
     <div className="main">
       <div className="header">
         <div className="header-text-container">
+          
           <h1>Asylum Office Grant Rate Tracker</h1>
           <h3>
             The Asylum Office Grant Rate Tracker provides asylum seekers,
