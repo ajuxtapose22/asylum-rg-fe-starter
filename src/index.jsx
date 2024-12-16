@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Auth0Provider } from '@auth0/auth0-react';
+import { Auth0Provider } from '@auth0/auth0-react'; // import AuthO Provider
 import {
   BrowserRouter as Router,
   Route,
@@ -15,6 +15,10 @@ import { LandingPage } from './components/pages/Landing';
 import { FooterContent, SubFooter } from './components/Layout/Footer';
 import { HeaderContent } from './components/Layout/Header';
 
+// Import the Profile component
+import Profile from './components/profile/Profile';
+
+
 // import { TablePage } from './components/pages/Table';
 
 import { Layout } from 'antd';
@@ -28,10 +32,10 @@ const { primary_accent_color } = colors;
 
 const store = configureStore({ reducer: reducer });
 
-
+// AuthO wraps App 
 ReactDOM.render(
   <Router>
-    <Auth0Provider
+    <Auth0Provider // Create .env for domain & clientId
      domain={process.env.REACT_APP_AUTH_O_DOMAIN}
      clientId={process.env.REACT_APP_AUTH_CLIENT_ID}
     authorizationParams={{
@@ -63,11 +67,14 @@ export function App() {
       >
         <HeaderContent />
       </Header>
+
       <Switch>
         <Route path="/" exact component={LandingPage} />
         <Route path="/graphs" component={GraphsContainer} />
+        <Route path="/profile" component={Profile} />
         <Route component={NotFoundPage} />
       </Switch>
+
       <Footer
         style={{
           backgroundColor: primary_accent_color,
